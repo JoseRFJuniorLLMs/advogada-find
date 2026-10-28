@@ -1,8 +1,11 @@
-name: CI
+name: CI / CD
 
 on:
   push:
   pull_request:
+
+permissions:
+  contents: read
 
 jobs:
   test:
@@ -18,3 +21,36 @@ jobs:
       - run: python -m pip install --upgrade pip
       - run: pip install -e ".[dev]"
       - run: pytest -q
+
+  deploy:
+    name: Deploy VM (main)
+    needs: test
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.VM_DEPLOY_ENABLED == 'true' }}
+    runs-on: ubuntu-latest
+    environment: production
+    env:
+      VM_SSH_HOST: ${{ secrets.VM_SSH_HOST }}
+      VM_SSH_USER: ${{ secrets.VM_SSH_USER }}
+      VM_SSH_PRIVATE_KEY: ${{ secrets.VM_SSH_PRIVATE_KEY }}
+      VM_SSH_KNOWN_HOSTS: ${{ secrets.VM_SSH_KNOWN_HOSTS }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Preparar acesso SSH com chave verificada
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "$VM_SSH_HOST" && test -n "$VM_SSH_USER"
+          test -n "$VM_SSH_PRIVATE_KEY" && test -n "$VM_SSH_KNOWN_HOSTS"
+          mkdir -p "$HOME/.ssh"
+          chmod 0700 "$HOME/.ssh"
+          printf '%s\n' "$VM_SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
+          printf '%s\n' "$VM_SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+      - name: Enviar release e atualizar VM com backup
+        shell: bash
+        run: |
+          set -euo pipefail
+          git archive --format=tar.gz HEAD > "/tmp/advogada-find-ci-${GITHUB_SHA}.tgz"
+          SSH_OPTS=(-o BatchMode=yes -o StrictHostKeyChecking=yes -o ConnectTimeout=15)
+          scp "${SSH_OPTS[@]}" "/tmp/advogada-find-ci-${GITHUB_SHA}.tgz" "$VM_SSH_USER@$VM_SSH_HOST:/tmp/advogada-find-ci-${GITHUB_SHA}.tgz"
+          ssh "${SSH_OPTS[@]}" "$VM_SSH_USER@$VM_SSH_HOST" "sudo -n bash -s -- /tmp/advogada-find-ci-${GITHUB_SHA}.tgz ${GITHUB_SHA}" < deploy/ci_update.sh
