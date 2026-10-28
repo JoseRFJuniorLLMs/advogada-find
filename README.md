@@ -97,4 +97,5 @@ O importador volta a consultar o site e aplica as regras de domínio, atividade 
 
 Usa o mesmo SQLite local do dev-find (fila com reserva, lease e limite diário). A regra do ambiente pede HeraclitusDB para projetos novos; a troca está pendente de decisão.
 #   a d v o g a d a - f i n d  
+ #   a d v o g a d a - f i n d  
  

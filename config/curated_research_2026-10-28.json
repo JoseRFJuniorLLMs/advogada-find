@@ -1,0 +1,227 @@
+[
+  {
+    "name": "Barbosa de Sá & Alencastro",
+    "city": "Brasília",
+    "state": "DF",
+    "website": "https://bsaa.adv.br/",
+    "source_url": "https://bsaa.adv.br/trabalhe-conosco/",
+    "email": "bsaa@bsaa.adv.br",
+    "notes": "Candidato de pesquisa; página solicita currículo e informa Brasília. O link apresentado para o e-mail aparece direcionado ao arquivo web; confirmar canal ao vivo."
+  },
+  {
+    "name": "TPC Advogados",
+    "city": "Brasília",
+    "state": "DF",
+    "website": "https://tpcadvogados.com.br/",
+    "source_url": "https://tpcadvogados.com.br/",
+    "email": "rhtpc@tpcadvogados.com.br",
+    "notes": "Candidato de pesquisa; endereço de currículo divulgado no site; a página também informa escritório em Brasília. Nenhuma vaga específica confirmada."
+  },
+  {
+    "name": "Barcelos Alarcon Advogados",
+    "city": "Brasília",
+    "state": "DF",
+    "website": "https://barcelosalarcon.com.br/",
+    "source_url": "https://barcelosalarcon.com.br/sobre-nos",
+    "email": "rh@barcelosalarcon.com.br",
+    "notes": "Candidato de pesquisa; página recebe currículos por e-mail ou formulário e lista presença em Brasília; não pressupõe vaga aberta."
+  },
+  {
+    "name": "FdS Advogados",
+    "city": "Brasília",
+    "state": "DF",
+    "website": "https://fdsadvogados.com/",
+    "source_url": "https://fdsadvogados.com/time-fds/",
+    "email": "selecao@fdsadvogados.com",
+    "notes": "Candidato de pesquisa; página pede currículo com texto de apresentação e especificação da vaga desejada."
+  },
+  {
+    "name": "Wald Advogados",
+    "city": "Brasília",
+    "state": "DF",
+    "website": "https://www.wald.com.br/",
+    "source_url": "https://www.wald.com.br/contato/",
+    "email": "selecao@wald.com.br",
+    "notes": "Candidato de pesquisa; canal de currículo publicado e unidade em Brasília; também há unidades em SP e RJ."
+  },
+  {
+    "name": "Bermudes Advogados",
+    "city": "Brasília",
+    "state": "DF",
+    "website": "https://sbadv.com.br/",
+    "source_url": "https://sbadv.com.br/trabalhe-conosco/",
+    "email": "dfbermudes@bermudes.com.br",
+    "notes": "Candidato de pesquisa; instrução e e-mail da unidade DF aparecem na indexação oficial. Página expirou na abertura direta; confirmar ao vivo. O domínio do e-mail é diferente do domínio do site; exige conferência antes de importação."
+  },
+  {
+    "name": "Schiefler Advocacia",
+    "city": "São Paulo",
+    "state": "SP",
+    "website": "https://schiefler.adv.br/",
+    "source_url": "https://schiefler.adv.br/trabalhe-conosco/",
+    "email": "administrativo@schiefler.adv.br",
+    "notes": "Candidato de pesquisa; atuação permanente em Brasília e trabalho remoto mencionados; sede em São Paulo. Banco de talentos solicita assunto Trabalhe conosco; não implica vaga no DF."
+  },
+  {
+    "name": "Lima e Falcão Advogados",
+    "city": "Recife",
+    "state": "PE",
+    "website": "https://www.limaefalcao.com.br/",
+    "source_url": "https://www.limaefalcao.com.br/trabalhe-conosco",
+    "email": "recrutamento@limaefalcao.com.br",
+    "notes": "Candidato de pesquisa; sede no Recife e filial Brasília; canal de currículos publicado. Filial não implica vaga no DF."
+  },
+  {
+    "name": "Marcelo Junger Sociedade de Advogados",
+    "city": "Rio de Janeiro",
+    "state": "RJ",
+    "website": "https://www.mjsa.adv.br/",
+    "source_url": "https://www.mjsa.adv.br/trabalhe-conosco-26975",
+    "email": "rh@mjsa.adv.br",
+    "notes": "Candidato de pesquisa; escritório no RJ e apoio em Brasília informado no site; não implica vaga no DF."
+  },
+  {
+    "name": "Carpena Advogados",
+    "city": "Porto Alegre",
+    "state": "RS",
+    "website": "https://carpena.com.br/",
+    "source_url": "https://carpena.com.br/br/quem-somos",
+    "email": "rh@carpena.com.br",
+    "notes": "Candidato de pesquisa; origem e endereço informado no RS e atuação em Brasília mencionada; não pressupõe filial física ou vaga no DF."
+  },
+  {
+    "name": "Lopes & Castelo Sociedade de Advogados",
+    "city": "São Paulo",
+    "state": "SP",
+    "website": "https://lopescastelo.adv.br/",
+    "source_url": "https://lopescastelo.adv.br/trabalhe-conosco/",
+    "email": "rh@lopescastelo.adv.br",
+    "notes": "Candidato de pesquisa; canal de currículo; unidades também no RJ, PE e ES."
+  },
+  {
+    "name": "Ferreira Pinto, Cordeiro, Santos e Maia Advogados",
+    "city": "Belo Horizonte",
+    "state": "MG",
+    "website": "https://www.ferreira.adv.br/",
+    "source_url": "https://www.ferreira.adv.br/",
+    "email": "escritorio@ferreira.adv.br",
+    "notes": "Candidato de pesquisa; aceita currículo; lista unidades em BH, Rio e São Paulo."
+  },
+  {
+    "name": "Muzzi e Advogados",
+    "city": "Belo Horizonte",
+    "state": "MG",
+    "website": "https://www.muzzi.adv.br/",
+    "source_url": "https://www.muzzi.adv.br/trabalhe-conosco",
+    "email": "trabalheconosco@muzzi.adv.br",
+    "notes": "Candidato de pesquisa; matriz BH e ponto de apoio SP. Um registro por escritório; aceita currículo."
+  },
+  {
+    "name": "Angelotto Advocacia",
+    "city": "São Paulo",
+    "state": "SP",
+    "website": "https://angelotto.adv.br/",
+    "source_url": "https://angelotto.adv.br/",
+    "email": "contato@angelotto.adv.br",
+    "notes": "Candidato de pesquisa; site solicita currículo com assunto Trabalhe Conosco."
+  },
+  {
+    "name": "Mário Jorge Advocacia",
+    "city": "Rio de Janeiro",
+    "state": "RJ",
+    "website": "https://www.mariojorgeadvocacia.com.br/",
+    "source_url": "https://www.mariojorgeadvocacia.com.br/",
+    "email": "rh@mariojorgeadvocacia.com.br",
+    "notes": "Candidato de pesquisa; site divulga canal de currículo para áreas jurídica, comercial e administrativa; verificar adequação."
+  },
+  {
+    "name": "Maneira Advogados",
+    "city": "São Paulo",
+    "state": "SP",
+    "website": "https://www.maneira.adv.br/",
+    "source_url": "https://www.maneira.adv.br/pt/trabalhe-conosco",
+    "email": "vagas@maneira.adv.br",
+    "notes": "Candidato de pesquisa; vaga júnior tributária presencial SP lista assunto específico; verificar vigência e adequação. A vaga cível anunciada no RJ é de estágio."
+  },
+  {
+    "name": "R.M. Andrade Advogados",
+    "city": "Rio de Janeiro",
+    "state": "RJ",
+    "website": "https://rmandrade.com/",
+    "source_url": "https://rmandrade.com/trabalhe-conosco/",
+    "email": "contato@rmandrade.com",
+    "notes": "Candidato de pesquisa; trabalho remoto informado; vaga júnior requer até 3 anos de inscrição e pode não se adequar. Site pede assunto da vaga e parágrafo sobre interesse; verificar vigência."
+  },
+  {
+    "name": "Brasil de Matos Advogados",
+    "city": "Resende",
+    "state": "RJ",
+    "website": "https://brasildematos.adv.br/",
+    "source_url": "https://brasildematos.adv.br/",
+    "email": "atendimento@brasildematos.adv.br",
+    "notes": "Candidato de pesquisa; canal geral é explicitamente indicado para currículo; atuação em criminal e direito público."
+  },
+  {
+    "name": "Wallace Sampaio Advogados e Consultores",
+    "city": "Rio de Janeiro",
+    "state": "RJ",
+    "website": "https://wsadv.com.br/",
+    "source_url": "https://wsadv.com.br/trabalhe-conosco/",
+    "email": "wsadv@wsadv.com.br",
+    "notes": "Candidato de pesquisa; endereço de currículo publicado na página Trabalhe Conosco."
+  },
+  {
+    "name": "Bastilho Coelho Advogados",
+    "city": "Rio de Janeiro",
+    "state": "RJ",
+    "website": "https://bastilhocoelho.com.br/",
+    "source_url": "https://bastilhocoelho.com.br/nossa-equipe/",
+    "email": "contato@bastilhocoelho.com.br",
+    "notes": "Candidato de pesquisa; rodapé da página indica endereço para currículo."
+  },
+  {
+    "name": "Cassano Advogados",
+    "city": "Rio de Janeiro",
+    "state": "RJ",
+    "website": "https://www.cassanoadvogados.com.br/",
+    "source_url": "https://www.cassanoadvogados.com.br/index.html",
+    "email": "recursos.humanos@cassanoadvogados.com.br",
+    "notes": "Candidato de pesquisa; email encontrado na indexação de fonte oficial de 2,5 anos; site não abriu diretamente. Confirmação atual obrigatória."
+  },
+  {
+    "name": "Belintani Sociedade de Advogados",
+    "city": "Belo Horizonte",
+    "state": "MG",
+    "website": "https://www.belintani.com.br/",
+    "source_url": "https://www.belintani.com.br/contato.html",
+    "email": "contato@belintani.com.br",
+    "notes": "Candidato de pesquisa; e-mail geral explicitamente indicado para currículos."
+  },
+  {
+    "name": "Zattar Advogados",
+    "city": "Belo Horizonte",
+    "state": "MG",
+    "website": "https://zattaradvogados.com/",
+    "source_url": "https://zattaradvogados.com/trabalhe-conosco",
+    "email": "contato@zattaradvogados.com",
+    "notes": "Candidato de pesquisa; página menciona advogado trabalhista pleno e candidatura espontânea; verificar se vaga ainda está ativa e condições de trabalho."
+  },
+  {
+    "name": "BRG Advogados",
+    "city": "Curitiba",
+    "state": "PR",
+    "website": "https://brgadvogados.com/",
+    "source_url": "https://brgadvogados.com/contato/",
+    "email": "contato@brgadvogados.com",
+    "notes": "Candidato de pesquisa; página orienta enviar currículo ao endereço geral."
+  },
+  {
+    "name": "Lamachia Advogados Associados",
+    "city": "Porto Alegre",
+    "state": "RS",
+    "website": "https://lamachia.adv.br/",
+    "source_url": "https://lamachia.adv.br/carreiras-juridicas/",
+    "email": "adm@lamachia.adv.br",
+    "notes": "Candidato de pesquisa; canal de currículo expresso na página de carreiras."
+  }
+]

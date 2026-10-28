@@ -1,0 +1,22 @@
+[Unit]
+Description=advogada-find continuous job outreach
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=advfind
+Group=advfind
+WorkingDirectory=/opt/advogada-find
+EnvironmentFile=/etc/advogada-find.env
+ExecStart=/opt/advogada-find/.venv/bin/python -m advogada_find daemon
+Restart=always
+RestartSec=30
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=full
+ReadWritePaths=/var/lib/advogada-find /opt/advogada-find-private
+
+[Install]
+WantedBy=multi-user.target

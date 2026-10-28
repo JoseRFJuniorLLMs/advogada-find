@@ -1,0 +1,22 @@
+[Unit]
+Description=advogada-find read-only outreach dashboard
+After=network-online.target advogada-find.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=advfind
+Group=advfind
+WorkingDirectory=/opt/advogada-find
+EnvironmentFile=/etc/advogada-find.env
+ExecStart=/opt/advogada-find/.venv/bin/python -m advogada_find dashboard --port 8797
+Restart=always
+RestartSec=10
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=full
+ReadWritePaths=/var/lib/advogada-find
+
+[Install]
+WantedBy=multi-user.target

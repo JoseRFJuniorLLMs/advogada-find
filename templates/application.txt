@@ -1,0 +1,22 @@
+{greeting},
+
+Meu nome é {name}, advogada inscrita na {oab}. Escrevo para apresentar minha candidatura a oportunidades na equipe jurídica de vocês.
+
+Atuo desde 2019 em contencioso judicial e administrativo, com experiência em:
+- Direito Público na Justiça Federal: mandados de segurança, tutelas de urgência, PAD, direitos de servidores (Lei 8.112/1990) e controle de legalidade de atos da Administração;
+- petições, recursos e manifestações nas áreas cível e trabalhista, com gestão de prazos e análise de risco;
+- contratos de software, licenciamento de tecnologia e proteção de dados (LGPD);
+- advocacia criminal no DF: audiências de custódia e habeas corpus perante o TJDFT.
+
+Sou pós-graduada em Direito Penal e tenho capacitação na Nova Lei de Licitações (Lei 14.133/2021). Mais sobre minha atuação: {site}
+
+Encaminho meu currículo em anexo e fico à disposição para uma conversa.
+
+Caso este não seja o canal responsável pela seleção, agradeço se puderem encaminhar esta mensagem a quem cuida do recrutamento.
+
+Atenciosamente,
+{name}
+{role} | {oab}
+{phone}
+{email}
+{linkedin}

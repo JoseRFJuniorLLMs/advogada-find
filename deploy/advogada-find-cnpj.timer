@@ -1,0 +1,11 @@
+[Unit]
+Description=advogada-find automatic public CNPJ publication check
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=24h
+Persistent=true
+Unit=advogada-find-cnpj.service
+
+[Install]
+WantedBy=timers.target

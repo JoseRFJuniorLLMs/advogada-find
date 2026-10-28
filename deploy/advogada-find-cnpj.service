@@ -1,0 +1,22 @@
+[Unit]
+Description=advogada-find monthly public CNPJ source ingestion
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=advfind
+Group=advfind
+WorkingDirectory=/opt/advogada-find
+EnvironmentFile=/etc/advogada-find.env
+ExecStart=/opt/advogada-find/.venv/bin/python -m advogada_find sync-cnpj
+Nice=15
+IOSchedulingClass=idle
+CPUQuota=50%
+MemoryMax=2G
+TimeoutStartSec=24h
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=full
+ReadWritePaths=/var/lib/advogada-find
