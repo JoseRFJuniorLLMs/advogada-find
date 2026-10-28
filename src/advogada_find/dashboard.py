@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import logging
+import sqlite3
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
@@ -11,6 +12,24 @@ from .config import Settings
 from .db import Database
 
 log = logging.getLogger(__name__)
+
+
+def prospecting_summary(settings: Settings) -> dict:
+    """Aggregates only; never exposes candidate or recruiter details publicly."""
+    source = settings.db_path.parent / 'prospeccao.db'
+    summary = {'available': False, 'total': 0, 'confirmed': 0, 'review': 0, 'pending': 0}
+    if not source.is_file():
+        return summary
+    try:
+        with sqlite3.connect(source.resolve().as_uri() + '?mode=ro', uri=True, timeout=2) as con:
+            for status, count in con.execute('SELECT status, COUNT(*) FROM offices GROUP BY status'):
+                summary['total'] += count
+                if status in {'confirmed', 'review', 'pending'}:
+                    summary[status] = count
+            summary['available'] = True
+    except (sqlite3.Error, OSError):
+        log.warning('prospecting_summary_unavailable')
+    return summary
 
 
 def snapshot(settings: Settings, query: dict) -> dict:
@@ -50,7 +69,8 @@ def snapshot(settings: Settings, query: dict) -> dict:
             'coverage':coverage,'applications':rows,'total':total,'page':page,
             'events':db.recent_events(15),'scan_errors':recent_errors,
             'dry_run':settings.dry_run,'from_email':settings.from_email,'timezone':settings.timezone,
-            'cnpj_sync':source_state['value'] if source_state else 'Carga nacional ainda não iniciada'}
+            'cnpj_sync':source_state['value'] if source_state else 'Carga nacional ainda não iniciada',
+            'prospecting':prospecting_summary(settings)}
 
 
 def handler_for(settings: Settings):

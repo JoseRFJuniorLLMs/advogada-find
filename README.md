@@ -99,3 +99,9 @@ Usa o mesmo SQLite local do dev-find (fila com reserva, lease e limite diário).
 #   a d v o g a d a - f i n d  
  #   a d v o g a d a - f i n d  
  
+
+## Prospecção de RH e CI/CD (v0.2)
+
+O módulo `python -m advogada_find.prospecting` importa CSVs de diretórios e plataformas B2B autorizadas, confirma contatos institucionais no site oficial, conserva a fonte, oferece verificação opcional por Hunter, revisão e exportação para o `import-curated`. Consulte [docs/PROSPECCAO.md](docs/PROSPECCAO.md). O painel principal mostra os totais da base `prospeccao.db` na mesma pasta do banco principal. Nenhuma importação envia e-mails automaticamente.
+
+No GitHub Actions, a matriz de testes antecede o deploy automático da `main`. É necessário configurar os secrets SSH e a variável `VM_DEPLOY_ENABLED=true` conforme a documentação. O deploy preserva banco e configuração privada, testa `/health` e possui backup para retorno em caso de falha. Sem a variável habilitada, o job de deploy permanece desativado.
