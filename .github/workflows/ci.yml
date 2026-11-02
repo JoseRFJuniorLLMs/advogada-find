@@ -3,6 +3,7 @@ name: CI / CD
 on:
   push:
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -25,8 +26,12 @@ jobs:
   deploy:
     name: Deploy VM (main)
     needs: test
-    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.VM_DEPLOY_ENABLED == 'true' }}
+    if: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+    concurrency:
+      group: advogada-find-production
+      cancel-in-progress: false
     environment: production
     env:
       VM_SSH_HOST: ${{ secrets.VM_SSH_HOST }}
@@ -39,8 +44,16 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test -n "$VM_SSH_HOST" && test -n "$VM_SSH_USER"
-          test -n "$VM_SSH_PRIVATE_KEY" && test -n "$VM_SSH_KNOWN_HOSTS"
+          missing=()
+          for key in VM_SSH_HOST VM_SSH_USER VM_SSH_PRIVATE_KEY VM_SSH_KNOWN_HOSTS; do
+            if [[ -z "${!key:-}" ]]; then
+              missing+=("$key")
+            fi
+          done
+          if (( ${#missing[@]} )); then
+            printf '::error::Configure os GitHub Actions secrets de production: %s\\n' "${missing[*]}"
+            exit 1
+          fi
           mkdir -p "$HOME/.ssh"
           chmod 0700 "$HOME/.ssh"
           printf '%s\n' "$VM_SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
@@ -54,3 +67,9 @@ jobs:
           SSH_OPTS=(-o BatchMode=yes -o StrictHostKeyChecking=yes -o ConnectTimeout=15)
           scp "${SSH_OPTS[@]}" "/tmp/advogada-find-ci-${GITHUB_SHA}.tgz" "$VM_SSH_USER@$VM_SSH_HOST:/tmp/advogada-find-ci-${GITHUB_SHA}.tgz"
           ssh "${SSH_OPTS[@]}" "$VM_SSH_USER@$VM_SSH_HOST" "sudo -n bash -s -- /tmp/advogada-find-ci-${GITHUB_SHA}.tgz ${GITHUB_SHA}" < deploy/ci_update.sh
+          {
+            echo "## Deploy automático — advogada-find"
+            echo "Revisão: \`${GITHUB_SHA}\`"
+            echo "Destino: VM de produção (via SSH verificado)"
+            echo "Resultado: backup, instalação, reinício e health check concluídos"
+          } >> "$GITHUB_STEP_SUMMARY"
