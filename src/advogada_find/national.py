@@ -30,7 +30,9 @@ def audit(app: AdvogadaFind) -> dict:
     return {k: (v or 0) for k, v in summary.items()}
 
 
-def recheck(app: AdvogadaFind, limit: int, include_verified: bool = False) -> dict:
+def recheck(app: AdvogadaFind, limit: int, include_verified: bool = False, after_id: int = 0) -> dict:
+    if after_id < 0:
+        raise ValueError('after-id não pode ser negativo')
     if not 1 <= limit <= 500:
         raise ValueError("limit deve ficar entre 1 e 500")
     with app.db.connect() as con:
@@ -38,13 +40,13 @@ def recheck(app: AdvogadaFind, limit: int, include_verified: bool = False) -> di
             SELECT c.id,c.name,c.domain,c.website,c.city,c.state
             FROM companies c
             LEFT JOIN curated_queue cq ON cq.company_id=c.id
-            WHERE cq.company_id IS NULL AND c.website LIKE 'https://%'
+            WHERE cq.company_id IS NULL AND c.website LIKE 'https://%' AND c.id > ?
               AND NOT EXISTS (SELECT 1 FROM applications a WHERE a.company_id=c.id
                  AND a.status IN ('sent','sending','uncertain'))
               AND (?=1 OR c.verified=0 OR c.active=0)
             ORDER BY c.verified ASC,c.id ASC LIMIT ?
-        """, (int(include_verified), limit))]
-    stats = {"selected": len(rows), "verified": 0, "no_contact": 0, "errors": 0,
+        """, (after_id, int(include_verified), limit))]
+    stats = {"selected": len(rows), "next_after_id": rows[-1]["id"] if rows else after_id, "verified": 0, "no_contact": 0, "errors": 0,
              "notices": [], "messages_sent": 0}
     crawler = WebsiteCrawler(app.s)
     try:
@@ -75,10 +77,11 @@ def main(argv=None) -> None:
     sub.add_parser("audit")
     scan = sub.add_parser("recheck")
     scan.add_argument("--limit", type=int, default=100)
+    scan.add_argument("--after-id", type=int, default=0)
     scan.add_argument("--include-verified", action="store_true")
     args = parser.parse_args(argv)
     app = AdvogadaFind(Settings())
-    result = audit(app) if args.command == "audit" else recheck(app, args.limit, args.include_verified)
+    result = audit(app) if args.command == "audit" else recheck(app, args.limit, args.include_verified, args.after_id)
     print(json.dumps(result, ensure_ascii=False, indent=2))
 
 
