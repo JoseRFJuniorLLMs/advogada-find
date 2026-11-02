@@ -37,7 +37,7 @@ ROLE_SCORES = {
     # Small law firms often publish only a generic office address.
     'contato': ('contato', 55), 'contact': ('contato', 55), 'faleconosco': ('contato', 52),
     'escritorio': ('contato', 50), 'secretaria': ('contato', 48), 'atendimento': ('contato', 46),
-    'info': ('contato', 45),
+    'info': ('contato', 45), 'administrativo': ('contato', 48),
 }
 
 
@@ -90,7 +90,9 @@ def curated_recruitment_alias(email: str) -> bool:
     if not EMAIL_RE.fullmatch(email):
         return False
     local = email.split('@', 1)[0].lower()
+    domain = email.split('@', 1)[1].split('.')[0].lower()
     return (bool(re.fullmatch(r'[a-z]{3,40}', local))
+            and (domain.startswith(local) or local.startswith(domain))
             and score_email(email, True)[1] == 0)
 
 
