@@ -298,7 +298,7 @@ class Database:
 
     def add_curated_verified(self, *, name, domain, website, city, state, batch, result, email):
         # Atomically pin a contact from a successful official-site crawl.
-        from .crawler import EMAIL_RE, same_domain, score_email
+        from .crawler import EMAIL_RE, same_domain, score_email, curated_recruitment_alias
         from .domains import valid_url
         identity = company_domain(domain)
         address = email.strip().lower()
@@ -311,7 +311,10 @@ class Database:
             raise ValueError('Endereço não confirmado por pesquisa elegível')
         ct = matches[0]
         kind, score = score_email(address, result.careers_signal or not self.contact_requires_careers_signal)
-        if not score or ct.kind != kind or ct.score != score:
+        special = (ct.kind == 'recrutamento' and ct.score == 85
+                   and curated_recruitment_alias(address)
+                   and (address, ct.source_url) in result.career_publications)
+        if not special and (not score or ct.kind != kind or ct.score != score):
             raise ValueError('Canal incompatível com as regras de elegibilidade')
         now = iso()
         with self.tx() as con:

@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import csv
 from .catalog import STATES
-from .crawler import WebsiteCrawler, CrawlError
+from .crawler import WebsiteCrawler, CrawlError, Contact, CrawlResult, curated_recruitment_alias
 from .discovery import normalize
 from .domains import valid_url
 
@@ -36,6 +36,18 @@ def import_curated(db, settings, csv_path, batch):
                     if not valid_url(source, domain):
                         raise ValueError('fonte não pertence ao domínio oficial')
                     checked = crawler.crawl(source, domain, city=row['city'].strip())
+                    address = row['email'].strip().lower()
+                    published = dict(checked.career_publications)
+                    blockers = ('cidade_nao_identificada', 'atividade_juridica_nao_identificada',
+                                'identidade_site_ausente', 'diretorio_ou_noticias',
+                                'cnpj_nao_confirmado_no_site')
+                    if (not any(ct.email == address for ct in checked.contacts)
+                            and address in published and curated_recruitment_alias(address)
+                            and not any(x in checked.rejection_reason for x in blockers)):
+                        checked = CrawlResult(
+                            checked.contacts + [Contact(address, 'recrutamento', 85, published[address])],
+                            checked.careers_signal, checked.evidence, True, '', checked.cnpj_basic,
+                            checked.name, checked.career_publications)
                     if not checked.eligible:
                         raise ValueError('site não passou na verificação: ' + checked.rejection_reason)
                     db.add_curated_verified(name=checked.name or row['name'], domain=domain, website=website,

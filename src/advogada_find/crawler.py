@@ -37,7 +37,7 @@ ROLE_SCORES = {
     # Small law firms often publish only a generic office address.
     'contato': ('contato', 55), 'contact': ('contato', 55), 'faleconosco': ('contato', 52),
     'escritorio': ('contato', 50), 'secretaria': ('contato', 48), 'atendimento': ('contato', 46),
-    'info': ('contato', 45),
+    'info': ('contato', 45), 'administrativo': ('contato', 48),
 }
 
 
@@ -62,6 +62,8 @@ class CrawlResult:
     rejection_reason: str = ''
     cnpj_basic: str = ''
     name: str = ''
+    # Endereços observados na própria página de recrutamento.
+    career_publications: tuple[tuple[str, str], ...] = ()
 
 
 def fold(text: str) -> str:
@@ -81,6 +83,17 @@ def score_email(email: str, careers_signal: bool) -> tuple[str, int]:
     if kind == 'contato' and not careers_signal:
         return 'reject', 0
     return kind, score
+
+
+def curated_recruitment_alias(email: str) -> bool:
+    """Aceita caixa curta de marca apenas num CSV revisado e comprovado no site."""
+    if not EMAIL_RE.fullmatch(email):
+        return False
+    local = email.split('@', 1)[0].lower()
+    domain = email.split('@', 1)[1].split('.')[0].lower()
+    return (bool(re.fullmatch(r'[a-z]{3,40}', local))
+            and (domain.startswith(local) or local.startswith(domain))
+            and score_email(email, True)[1] == 0)
 
 
 def same_domain(email_domain: str, domain: str) -> bool:
@@ -248,17 +261,23 @@ class WebsiteCrawler:
                     for address in re.split(r'[,;]', addresses):
                         address = address.strip().lower()
                         if EMAIL_RE.fullmatch(address):
-                            found[address] = url
+                            found.setdefault(address, url)
             for element in soup.find_all(attrs={'data-cfemail': True}):
                 encoded = element.get('data-cfemail')
                 if isinstance(encoded, str):
                     address = cloudflare_email(encoded)
                     if address:
-                        found[address] = url
+                        found.setdefault(address, url)
             for address in EMAIL_RE.findall(text):
-                found[address.lower()] = url
+                found.setdefault(address.lower(), url)
             for address in obfuscated_emails(text):
-                found[address] = url
+                found.setdefault(address, url)
+        # Apenas publicações na página de carreiras são prova para o importador revisado.
+        career_urls = {url for url, _, text in pages if career_signal(text, url)}
+        career_publications = tuple(sorted(
+            (email, url) for email, url in found.items()
+            if url in career_urls and same_domain(email.rsplit('@', 1)[1], domain)
+        ))
         contacts = []
         for email, url in found.items():
             if not same_domain(email.rsplit('@', 1)[1], domain):
@@ -298,4 +317,4 @@ class WebsiteCrawler:
         evidence = (f'website={website}; advocacia={legal}; cidade={city}:{locality}; '
                     f'identidade={branding}; carreiras={careers}; cnpj_confirmado={legal_match}; páginas={len(pages)}')
         return CrawlResult(contacts, careers, evidence, eligible, ','.join(reasons), cnpj_basic,
-                           firm_name(*brands, *titles))
+                           firm_name(*brands, *titles), career_publications)
