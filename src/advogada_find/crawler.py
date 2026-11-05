@@ -219,13 +219,22 @@ class WebsiteCrawler:
         if root != website:
             queue.append(root)
         careers = False
+        optional_error = None
         texts, titles, brands = [], [], []
         while queue and len(visited) < self.s.max_pages_per_site:
             url = queue.pop(0)
             if url in visited:
                 continue
             visited.add(url)
-            fetched = self._fetch(url, domain)
+            try:
+                fetched = self._fetch(url, domain)
+            except CrawlError as exc:
+                if url in (website, root):
+                    raise
+                # A secondary page can fail after the official site has already
+                # provided enough evidence. Stop requesting pages for this site.
+                optional_error = exc
+                break
             if not fetched:
                 continue
             final_url, html = fetched
@@ -308,6 +317,9 @@ class WebsiteCrawler:
             legal_match = registry_cnpj[:8].upper() in roots
             cnpj_basic = registry_cnpj[:8].upper() if legal_match else ''
         eligible = bool(legal and locality and branding and not directory and contacts and legal_match)
+        if optional_error is not None and not eligible:
+            # Incomplete evidence should be retried, not persisted as a rejection.
+            raise optional_error
         reasons = []
         for ok, reason in [(legal,'atividade_juridica_nao_identificada'),(locality,'cidade_nao_identificada'),
                            (branding,'identidade_site_ausente'),(not directory,'diretorio_ou_noticias'),
