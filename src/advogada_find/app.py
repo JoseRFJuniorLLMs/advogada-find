@@ -13,6 +13,7 @@ from .discovery import SearchDiscovery, DiscoveryError
 from .emailer import Mailer, SendRejected, SendUncertain
 from .locking import sender_lock
 from .catalog import import_cities
+from .national import scheduled_recheck
 
 log = logging.getLogger('advogada_find')
 
@@ -214,6 +215,15 @@ class AdvogadaFind:
 
     def _scan_loop(self, stop: threading.Event):
         while not stop.is_set():
+            try:
+                result = scheduled_recheck(self)
+                if result and result['selected']:
+                    log.info('national_recheck_done selected=%s verified=%s errors=%s',
+                             result['selected'], result['verified'], result['errors'])
+            except Exception as exc:
+                log.error('national_recheck_error error=%s', type(exc).__name__)
+            if stop.is_set():
+                break
             try:
                 if self.s.cities_scope != 'configured':
                     with self.db.connect() as con:

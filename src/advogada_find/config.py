@@ -50,6 +50,7 @@ class Settings:
     timezone: str = env('TIMEZONE', 'America/Sao_Paulo')
     loop_seconds: int = env('LOOP_SECONDS', 300, int)
     city_rescan_days: int = env('CITY_RESCAN_DAYS', 7, int)
+    national_recheck_batch_size: int = env('NATIONAL_RECHECK_BATCH_SIZE', 5, int)
     max_results_per_query: int = env('MAX_RESULTS_PER_QUERY', 20, int)
     max_pages_per_site: int = env('MAX_PAGES_PER_SITE', 10, int)
     http_timeout_seconds: int = env('HTTP_TIMEOUT_SECONDS', 15, int)
@@ -110,6 +111,8 @@ class Settings:
         for name in ('crawl_delay_seconds', 'min_send_interval_seconds', 'max_send_jitter_seconds'):
             if getattr(self, name) < 0:
                 raise ValueError(f'{name} não pode ser negativo')
+        if not 0 <= self.national_recheck_batch_size <= 500:
+            raise ValueError('NATIONAL_RECHECK_BATCH_SIZE deve ficar entre 0 e 500')
         if not 1 <= self.smtp_port <= 65535:
             raise ValueError('SMTP_PORT inválida')
         if not self.smtp_ssl and not self.smtp_starttls:

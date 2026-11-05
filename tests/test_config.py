@@ -28,7 +28,8 @@ def test_environment_read_at_instantiation(monkeypatch):
 
 @pytest.mark.parametrize('change', [dict(max_emails_per_day=0),dict(crawl_delay_seconds=-1),
     dict(send_window_start='17:00',send_window_end='08:00'),dict(send_weekdays=(8,)),
-    dict(smtp_starttls=False,smtp_ssl=False),dict(smtp_port=0)])
+    dict(smtp_starttls=False,smtp_ssl=False),dict(smtp_port=0),
+    dict(national_recheck_batch_size=-1),dict(national_recheck_batch_size=501)])
 def test_invalid_limits_and_security(settings,change):
     with pytest.raises(ValueError):
         replace(settings,**change)

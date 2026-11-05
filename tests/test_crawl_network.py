@@ -193,3 +193,26 @@ def test_search_result_career_page_and_root_are_both_crawled(settings):
         assert seen == ['/robots.txt', '/trabalhe-conosco', '/']
     finally:
         crawler.close()
+
+
+@pytest.mark.parametrize('city', ['Campinas', 'Brasília'])
+def test_secondary_page_error_preserves_only_complete_evidence(settings, city):
+    def handler(req):
+        if req.url.path == '/robots.txt':
+            return robots()
+        if req.url.path == '/':
+            return html('<title>Acme Advogados</title>Escritório de advocacia em Campinas. '
+                        'rh@acme.com.br <a href="/contato">Contato</a>')
+        return httpx.Response(503)
+
+    crawler = crawler_with(settings, handler)
+    try:
+        if city == 'Brasília':
+            with pytest.raises(CrawlError, match='HTTP 503'):
+                crawler.crawl('https://acme.com.br/', 'acme.com.br', city=city)
+        else:
+            result = crawler.crawl('https://acme.com.br/', 'acme.com.br', city=city)
+            assert result.eligible
+            assert [contact.email for contact in result.contacts] == ['rh@acme.com.br']
+    finally:
+        crawler.close()
